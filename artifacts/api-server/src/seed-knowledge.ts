@@ -10,13 +10,13 @@ const KNOWLEDGE_BASE = `# Gujarati Wedding Knowledge Base
 3. Kankotri — Wedding invitation ceremony
 4. Ganesh Sthapan — Commencement of all marriage rituals
 5. Mehendi — The henna ceremony
-6. Sangeet Sandhya / Garba & Dandia Raas — Traditional Gujarati dances
+6. Sangeet / Garba & Dandia Raas — Traditional Gujarati dances
 7. Prenuptial Ceremonies (Vidhi Day — all typically on the same day):
    - Mandva Mahurat — Constructing the canopy for wedding rites
    - Pithi — Beautification / haldi ritual
+   - Mameru / Mosaalu — The bride receives gifts from her maternal uncle
    - Grah Shanti — Invoking harmony within the planets
    - Varadh / Gotaido — Pot procession ceremony (after Grah Shanti)
-8. Mameru / Mosaalu — The bride receives gifts from her maternal uncle
 9. Varghodo / Baarat — The groom's procession
 10. Var Ponke / Jaan Agman — Welcoming the groom
 11. Lagna — The wedding ceremony:
@@ -115,7 +115,7 @@ The ceremony itself is usually simple compared to larger wedding events, but it 
 
 ### Mehendi (Mehndi)
 
-Mehendi is a fun and informal gathering of the bride's female relatives and friends. It is usually the first event of the wedding weekend, typically held two to three days before the wedding, though timing can vary.
+Mehendi is a fun and informal gathering of the bride's female relatives and friends. It always takes place before Vidhi Day — typically one to two days before — making it one of the first events of the wedding weekend.
 
 Mehendi (henna) is ground into a paste and applied by professional mehendiwallis in fine patterns on the palms and feet of the bride. Adorning the bride with mehendi can take hours as particularly intricate designs are drawn. The henna is washed off in a couple of hours, leaving a deep red impression.
 
@@ -135,7 +135,7 @@ This event can occur simultaneously at both the bride's and groom's homes, or as
 
 ### About Vidhi Day
 
-The Vidhi (also called the pre-wedding ceremony day) includes the Pithi, Mandva Mahurat, Grah Shanti, Mameru, and Varadh — all typically held on the same day, the day before the wedding. These rituals are associated not only with Lord Ganesha but also with the family's paternal side Kuldevi.
+The Vidhi (also called the pre-wedding ceremony day) includes the Pithi, Mandva Mahurat, Mameru, Grah Shanti, and Varadh — typically all held on the same day, the day before the wedding. The timing of Vidhi Day is chosen to fall at an auspicious muhurat determined by the family pandit. These rituals are associated not only with Lord Ganesha but also with the family's paternal side Kuldevi.
 
 ---
 
@@ -157,7 +157,7 @@ This puja is attended by close family members and is performed in both homes sim
 
 Also known as Mangal Mahurat. This ceremony occurs simultaneously at both the bride's and groom's homes. The families pray to Lord Ganesha and seek blessings from Mother Earth before erecting the mandap (wedding canopy).
 
-Back in the day, the wedding ceremony normally took place in front of the bride's home by setting up a special square gazebo called a Mandap. The prayers to bless this space and the new couple are performed during the Mandap Mahurat.
+Traditionally, the prayers were performed at the actual site where the mandap would be erected. In modern times the ceremony takes place at the home or venue and is no longer done at the mandap site itself, but it retains its full spiritual significance.
 
 A family priest officiates. The bride's kaka and kaaki (father's brother and his wife) carry a copper vessel with a coconut nestled on top, on which paan (betel) leaves are tied with nada chari (red thread). They will also have flower garlands on. This is placed in front of the shrine set up in the house. The kaka and kaaki put flowers and kumkum (vermilion) on the idol of Lord Ganesha. The priest performs a brief puja at the shrine, then puts a tikka on their foreheads (though this depends on family tradition) and gives a small stick with nada chari wrapped around it. The kaaki carries this to the site of the mandva — in modern times, just outside the venue of the vidhi — and embeds it into the earth, consecrating it. This stick is symbolic of one of the poles of the mandva that will support the canopy.
 
@@ -256,11 +256,11 @@ After the Grah Shanti, there is typically a dinner in a hall for family and frie
 
 ### Mameru (Mosaalu / Mosalu / Mausalu)
 
-"Mameru" is derived from "mama" — the maternal uncle. This ceremony happens during or around the Grah Shanti on Vidhi Day.
+"Mameru" is derived from "mama" — the maternal uncle. This ceremony typically takes place before the Grah Shanti on Vidhi Day.
 
-The custom of mameru originated centuries ago when there were no legal rights for daughters. It was customary for parents to start making provisions for their daughter by gifting her on occasions like Rakshabandhan or Bhaibeej. This accumulated as streedhan (daughter's wealth). On getting married, the daughter would be given jewelry, clothes, and vessels. The parents would also bear all expenses during her pregnancy through delivery. Her newborn child would also be gifted with jewelry and clothes. When her child grew up and got married, the mama came with the mameru — and thus this practice of giving to the sister/daughter and their children became a lifelong practice of sharing family wealth with the female child.
+The Mameru is a beautiful tradition rooted in the deep bond between a brother and his sister. The mama showers the bride with love and gifts before she begins her new chapter in life, and this practice of giving has been passed down through generations as a heartfelt expression of family support and togetherness.
 
-The mameru is brought by the mama and mami in a decorated basket during or around the Grah Shanti. The bride's mother warmly welcomes it and rejoices that her brother is also ready to participate in the joyous occasion. Mameru stands as an eternal bond between brother and sister, and women continue to draw upon it for a feeling of security and support.
+The mameru is brought by the mama and mami in a decorated basket, typically before the Grah Shanti begins on Vidhi Day. The bride's mother warmly welcomes it and rejoices that her brother is also ready to participate in the joyous occasion. Mameru stands as an eternal bond between brother and sister, and women continue to draw upon it for a feeling of security and support.
 
 Not only are the mama and mami involved — all members of the maternal side gather and parade into the ceremony with the gifts.
 
@@ -274,7 +274,7 @@ Gifts brought in the mameru include:
 
 The mama will also pass out items to the guests — various things like nuts, British candy, or in modern times bags, snacks, and namkeen.
 
-The mama's gifts hold deep significance — historically, daughters had no legal inheritance rights, so the mama's gifts represented the maternal family's share of wealth and lifelong support.
+The mama's gifts hold deep significance — they represent the maternal family's love, well-wishes, and lifelong bond with the bride.
 
 Note: Most rituals during the Vidhi are performed by the paternal side of the family. The maternal side plays its most central role during the Mameru ceremony.
 
@@ -783,7 +783,6 @@ Together, the Coke and Kalvo ceremony is all about humor, bonding, and welcoming
 function chunkKnowledgeBase(markdown: string): { title: string; content: string }[] {
   const chunks: { title: string; content: string }[] = [];
   const sections = markdown.split(/(?=###\s)/);
-  
   for (const section of sections) {
     const trimmed = section.trim();
     if (!trimmed) continue;
@@ -803,11 +802,9 @@ export async function seedKnowledge() {
     const [{ value: existingCount }] = await db
       .select({ value: count() })
       .from(knowledgeChunks);
-    
     if (existingCount > 0) {
       return;
     }
-    
     const chunks = chunkKnowledgeBase(KNOWLEDGE_BASE);
     if (chunks.length === 0) return;
     await db.insert(knowledgeChunks).values(chunks);
