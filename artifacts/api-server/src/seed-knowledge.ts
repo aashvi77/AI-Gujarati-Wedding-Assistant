@@ -766,30 +766,35 @@ The traditional wedding bangles worn by a Gujarati bride — red and white, trad
 
 ### Kapoor Na Gajra
 A unique and aromatic piece of bridal jewelry worn by Gujarati brides — a necklace made of real camphor beads with red, green, and gold thread wound intricately around them. It is specific to Gujarati bridal attire.
+
+---
+
+### Coke and Kalvo Ceremony
+
+The Coke and Kalvo ceremony is a Surti (Surat) Gujarati tradition and a fun ice-breaking event performed while welcoming the groom's side.
+
+**Kalvo** is the original tradition. The bride's mother and other aunties welcome the groom and his friends by feeding them sweets. The catch — the sweets sometimes have red chilli powder, excess salt, or other surprises added to pull the groom's leg and have a laugh. It is a lighthearted, playful way to break the ice between both families.
+
+**The Coke ceremony** was added later by the younger generation. Once Kalvo is done, the sister-in-laws and bridesmaids bring out Coke in decorated bottles. Again, the Coke could have excess salt, mirch (chilli), or other surprises added — or the Coke could be straight up replaced with alcohol in the decorated bottle. The groom is made to drink it, not knowing what's inside.
+
+Together, the Coke and Kalvo ceremony is all about humor, bonding, and welcoming the groom's family in a fun and memorable way. It is specific to Surti Gujarati weddings and not practiced in all Gujarati communities.
 `;
 
 function chunkKnowledgeBase(markdown: string): { title: string; content: string }[] {
   const chunks: { title: string; content: string }[] = [];
-  
-  // Split by ### headers (individual ceremony sections)
   const sections = markdown.split(/(?=###\s)/);
   
   for (const section of sections) {
     const trimmed = section.trim();
     if (!trimmed) continue;
-    
     const lines = trimmed.split("\n");
     const firstLine = lines[0].trim();
-    
-    // Extract title - remove ### prefix
     const title = firstLine.replace(/^###\s+/, "").replace(/^##\s+/, "").replace(/^#\s+/, "").trim();
     const body = lines.slice(1).join("\n").trim();
-    
     if (title && body.length > 50) {
       chunks.push({ title, content: `${title}\n\n${body}` });
     }
   }
-  
   return chunks;
 }
 
@@ -800,15 +805,12 @@ export async function seedKnowledge() {
       .from(knowledgeChunks);
     
     if (existingCount > 0) {
-      return; // Already seeded
+      return;
     }
     
     const chunks = chunkKnowledgeBase(KNOWLEDGE_BASE);
-    
     if (chunks.length === 0) return;
-    
     await db.insert(knowledgeChunks).values(chunks);
-    
     console.log(`Seeded ${chunks.length} knowledge chunks`);
   } catch (err) {
     console.error("Failed to seed knowledge base:", err);
