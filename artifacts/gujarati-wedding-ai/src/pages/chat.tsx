@@ -3,7 +3,7 @@ import { useChat } from "@/hooks/use-chat";
 import { Send, Plus } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
-const RED = "#bd2f24";
+const RED = "#974046";
 
 const SUGGESTIONS = [
   "What happens during the Pithi ceremony?",
@@ -77,9 +77,9 @@ export default function ChatPage() {
             />
 
             {/* Frosted glass card */}
-            <div className="relative z-10 w-full max-w-3xl mx-auto px-4 py-16 flex flex-col items-center">
+            <div className="relative z-10 w-full max-w-5xl mx-auto px-4 py-8 flex flex-col items-center">
               <div
-                className="w-full rounded-3xl px-12 py-14 flex flex-col items-center"
+                className="w-full rounded-3xl px-16 py-8 flex flex-col items-center"
                 style={{
                   background: "rgba(255, 250, 244, 0.70)",
                   backdropFilter: "blur(20px)",
@@ -105,7 +105,7 @@ export default function ChatPage() {
                   initial={{ opacity: 0, y: 12 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.15, duration: 0.45 }}
-                  className="text-4xl sm:text-5xl font-bold font-serif text-foreground text-center leading-tight mb-3"
+                  className="text-4xl sm:text-5xl font-bold font-serif text-foreground text-center leading-tight mb-3 whitespace-nowrap"
                 >
                   Gujarati Wedding Assistant
                 </motion.h1>
@@ -127,7 +127,7 @@ export default function ChatPage() {
                   className="w-full mb-4"
                 >
                   <div className="relative flex items-end bg-white/80 border border-border rounded-2xl shadow-md px-4 py-3 gap-2 transition-shadow"
-                    style={{ borderColor: "rgba(189,47,36,0.2)" }}
+                    style={{ borderColor: "rgba(151,64,70,0.2)" }}
                   >
                     <textarea
                       ref={inputRef}
@@ -162,7 +162,7 @@ export default function ChatPage() {
                       key={s}
                       onClick={() => handleSuggestion(s)}
                       className="text-sm px-4 py-3 rounded-xl bg-white/70 text-muted-foreground hover:text-foreground hover:bg-red-50 hover:border-red-400 transition-all text-center leading-snug"
-                      style={{ border: `1px solid rgba(189,47,36,0.25)` }}
+                      style={{ border: `1px solid rgba(151,64,70,0.25)` }}
                     >
                       {s}
                     </button>
@@ -195,7 +195,7 @@ export default function ChatPage() {
             </header>
 
             <main className="flex-1 overflow-y-auto px-4 py-6 space-y-4">
-              <div className="max-w-3xl mx-auto space-y-4">
+              <div className="max-w-5xl mx-auto space-y-4">
                 <AnimatePresence initial={false}>
                   {messages.map((msg, i) => (
                     <motion.div
@@ -234,7 +234,7 @@ export default function ChatPage() {
                               <motion.span
                                 key={k}
                                 className="w-2 h-2 rounded-full block"
-                                style={{ background: "rgba(189,47,36,0.4)" }}
+                                style={{ background: "rgba(151,64,70,0.4)" }}
                                 animate={{ y: [0, -5, 0] }}
                                 transition={{ repeat: Infinity, duration: 0.65, delay }}
                               />
@@ -250,10 +250,10 @@ export default function ChatPage() {
             </main>
 
             <footer className="flex-none px-4 py-3 border-t bg-background">
-              <div className="max-w-3xl mx-auto">
+              <div className="max-w-5xl mx-auto">
                 <div
                   className="relative flex items-end bg-card border rounded-2xl shadow-sm px-4 py-3 gap-2 transition-shadow"
-                  style={{ borderColor: "rgba(189,47,36,0.2)" }}
+                  style={{ borderColor: "rgba(151,64,70,0.2)" }}
                 >
                   <textarea
                     ref={inputRef}
