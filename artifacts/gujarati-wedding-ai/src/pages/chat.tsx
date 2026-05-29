@@ -81,7 +81,7 @@ export default function ChatPage() {
               <div
                 className="w-full rounded-3xl px-16 py-8 flex flex-col items-center"
                 style={{
-                  background: "rgba(255, 250, 244, 0.70)",
+                  background: "rgba(240, 233, 222, 0.70)",
                   backdropFilter: "blur(20px)",
                   WebkitBackdropFilter: "blur(20px)",
                   boxShadow: "0 8px 48px rgba(0,0,0,0.14)",
