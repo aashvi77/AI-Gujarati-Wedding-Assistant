@@ -161,7 +161,7 @@ export default function ChatPage() {
                     <button
                       key={s}
                       onClick={() => handleSuggestion(s)}
-                      className="text-sm px-4 py-3 rounded-xl bg-white/70 text-muted-foreground hover:text-foreground hover:bg-red-200 hover:border-red-800 transition-all text-center leading-snug"
+                      className="text-sm px-4 py-3 rounded-xl bg-white/70 text-muted-foreground hover:text-foreground hover:bg-[#e8d9c8] hover:border-[#974046] transition-all text-center leading-snug"
                       style={{ border: "3px solid rgba(151,64,70,0.6)" }}
                     >
                       {s}
