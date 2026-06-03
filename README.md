@@ -102,7 +102,6 @@ essence of a Gujarati wedding:
 ---
 
 ## Future Roadmap
-## Future Roadmap
 
 The product is currently in active development. While v1.0 delivers a functional 
 Minimum Viable Product (MVP), the current development sprint is focused on the 
