@@ -23,27 +23,44 @@ domain-specific guidance for modern couples.
 ## Product Vision and Scope Prioritization
 
 ### The Problem Statement
-As generations move abroad, deeply rooted cultural traditions and intricate 
-wedding rituals risk becoming decentralized or lost. Modern couples frequently 
-face a "knowledge gap"—lacking immediate, accessible exposure to elders or 
-experts who know the exact logistical and ritualistic requirements of 
-traditional ceremonies. 
 
-This assistant was engineered to serve as the definitive digital domain expert 
-for these workflows. By capturing complex cultural logic and structuring it 
-into an interactive platform, the system delivers authoritative, context-isolated 
-guidance that bridges the generational knowledge gap and streamlines the entire
-wedding planning process.
+As generations move abroad, deeply rooted cultural traditions and intricate wedding rituals risk becoming decentralized or lost. Modern couples frequently face a knowledge gap, lacking immediate access to elders or community experts who traditionally provide guidance on the logistical, ceremonial, and cultural requirements of wedding events.
+
+### Target User
+
+This product is designed for members of the South Asian diaspora planning traditional weddings without direct access to the family and community networks that have historically guided these ceremonies.
+
+Primary users include:
+
+* Engaged couples planning traditional wedding events
+* Family members responsible for coordinating ceremonies and logistics
+* Wedding planners seeking accessible, culturally grounded guidance
+
+By capturing complex cultural knowledge and structuring it into an interactive platform, the system helps users navigate traditions, understand ritual significance, and streamline wedding planning through an accessible conversational experience.
 
 ### MVP Scope and Niche Target
-* **The Pivot:** The initial product discovery phase aimed to cover all 
-  Indian weddings. However, given the vast diversity of regional traditions 
-  across India, the scope was strategically narrowed to establish a high-quality 
-  Minimum Viable Product (MVP).
-* **Target Focus:** This MVP specifically targets Gujarati Hindu weddings, 
-  representing one of the largest South Asian diaspora communities globally. 
-  Focusing on this specific geographical niche allowed for a hyper-dense, 
-  reliable knowledge base before scaling to adjacent cultures.
+
+#### The Pivot
+
+The initial product discovery phase aimed to support Indian weddings broadly. However, early research revealed significant variation across regions, religions, and family traditions, creating challenges in maintaining consistent, accurate, and contextually relevant responses.
+
+To establish a high quality Minimum Viable Product (MVP), the scope was intentionally narrowed.
+
+#### Target Focus
+
+This MVP specifically targets Gujarati Hindu weddings. During product discovery, this audience emerged as a strong initial user segment due to the size of the Gujarati diaspora and the frequency with which traditional wedding knowledge is passed across generations and geographies.
+
+Focusing on a single cultural domain enabled:
+
+* More accurate and reliable responses
+* Higher quality knowledge curation
+* Reduced ambiguity across regional traditions
+* A stronger foundation for future expansion
+
+#### Product Strategy
+
+Rather than attempting to solve every wedding planning scenario at launch, the product prioritizes depth over breadth. This focused approach enables higher retrieval accuracy, more consistent ritual guidance, and a stronger foundation for future expansion into adjacent South Asian traditions.
+
 
 ---
 
