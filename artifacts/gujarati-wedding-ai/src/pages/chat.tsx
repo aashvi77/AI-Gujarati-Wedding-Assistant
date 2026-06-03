@@ -196,10 +196,9 @@ export default function ChatPage() {
               {/* Hamburger button on landing page — top left */}
               <button
                 onClick={() => setSidebarOpen(true)}
-                className="absolute top-4 left-4 z-10 p-2 rounded-xl transition-all hover:opacity-70 active:scale-95"
-                style={{ color: RED }}
+                className="absolute top-4 left-4 z-10 p-2 transition-all hover:opacity-80 active:scale-95"
               >
-                <Menu className="w-8 h-8" />
+                <Menu className="w-8 h-8 text-white" style={{ filter: "drop-shadow(0 2px 4px rgba(0,0,0,0.6))" }} />
               </button>
 
               {/* Frosted glass card */}
