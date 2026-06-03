@@ -9,6 +9,9 @@ domain-specific guidance for modern couples.
 
 ## Live Demo and Interface
 
+**Live Application Link:** [AI Wedding Assistant](https://gujarati-wedding-ai-v5.onrender.com/)  
+*Note: This application is hosted on a free Render instance. If the link has been inactive, it may take up to 50 seconds to spin up the server and load the interface.*
+
 | Home Screen | Example Chat |
 | --- | --- |
 | <img src="https://github.com/user-attachments/assets/484b4663-c5df-442c-86f6-16858954f236" width="380"> | <img src="https://github.com/user-attachments/assets/e78051f5-e394-4bd8-a5e8-a2a5310f6c4c" width="380"> |
