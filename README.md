@@ -88,7 +88,7 @@ intended core scope was a primary engineering requirement:
   prompts unrelated to wedding or cultural planning workflows, ensuring resource 
   optimization and a focused user experience.
 
-### Cultural UX/UI Design Choice
+### UX/UI Design Choice
 The user interface was intentionally crafted to evoke the traditional 
 essence of a Gujarati wedding:
 
