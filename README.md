@@ -13,7 +13,8 @@ domain-specific guidance for modern couples.
 | --- | --- |
 | <img src="https://github.com/user-attachments/assets/484b4663-c5df-442c-86f6-16858954f236" width="380"> | <img src="https://github.com/user-attachments/assets/e78051f5-e394-4bd8-a5e8-a2a5310f6c4c" width="380"> |
 | **Sidebar and Chat History** | **System Safety Guardrail** |
-| <img src="https://github.com/user-attachments/assets/c7b5723b-74d7-4fec-8b5c-f356d76ee251" width="380"> | <img src="https://github.com/user-attachments/assets/21a300b2-34c0-4016-a075-145ec67cfb7b" width="380"> |
+| <img src="https://github.com/user-attachments/assets/c7b5723b-74d7-4fec-8b5c-f356d76ee251" width="380"> | <img width="1440" height="794" alt="Screenshot 2026-06-03 at 12 43 28 AM" src="https://github.com/user-attachments/assets/58fda602-a3bf-4704-80d4-b3329883c527" />
+|
 
 ---
 
