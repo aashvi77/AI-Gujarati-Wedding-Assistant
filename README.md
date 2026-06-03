@@ -103,18 +103,9 @@ essence of a Gujarati wedding:
 
 ## Future Roadmap
 
-The product is currently in active development. While v1.0 delivers a functional 
-Minimum Viable Product (MVP), the current development sprint is focused on the 
-following backlog items:
+The product is currently in active development. While v1.0 delivers a functional Minimum Viable Product (MVP) tailored for Gujarati traditions, the current engineering backlog focuses on scaling the system architecture and enhancing the user experience:
 
-* **Retrieval Tuning:** Actively refining chunking strategies and prompt 
-  context windows to increase retrieval precision and response optimization.
-* **Social Collaboration Features:** Engineering a pipeline to allow users 
-  to export, share, or collaborate on generated wedding planning workflows 
-  with family members.
-* **UI/UX Polish and Visual Identity:** Optimizing the interface layouts, 
-  streamlining the CSS styling, and establishing a cohesive brand identity to 
-  elevate the overall user experience.
-* **Scale Architecture:** Mapping out structural data ingestion pipelines to 
-  seamlessly scale the validated dataset into adjacent South Asian regional 
-  traditions.
+* **Cross-Cultural & Regional Scaling:** Designing structural data ingestion pipelines to scale the curated knowledge base into adjacent South Asian regional cultures and traditions (including Punjabi, Telugu, and more), standardizing the schema to handle localized rituals seamlessly.
+* **Retrieval Tuning:** Actively refining chunking strategies and prompt context windows to increase retrieval precision and response optimization for complex cultural queries.
+* **Social Collaboration Features:** Engineering a pipeline to allow users to export, share, or collaborate on generated wedding planning workflows with family members and vendors.
+* **UI/UX Polish & Visual Identity:** Optimizing interface layouts, streamlining styling, and establishing a cohesive brand identity to elevate the overall user experience.
