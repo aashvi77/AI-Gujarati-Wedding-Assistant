@@ -26,10 +26,11 @@ face a "knowledge gap"—lacking immediate, accessible exposure to elders or
 experts who know the exact logistical and ritualistic requirements of 
 traditional ceremonies. 
 
-While generic LLMs can answer basic cultural questions, they frequently 
-hallucinate details, generalize distinct regional traditions, and lack the 
-high-fidelity accuracy required to plan life-defining events. This assistant 
-bridges that gap by acting as a digital domain expert.
+This assistant was engineered to serve as the definitive digital domain expert 
+for these workflows. By capturing complex cultural logic and structuring it 
+into an interactive platform, the system delivers authoritative, context-isolated 
+guidance that bridges the generational knowledge gap and streamlines the entire
+wedding planning process.
 
 ### MVP Scope and Niche Target
 * **The Pivot:** The initial product discovery phase aimed to cover all 
