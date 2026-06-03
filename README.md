@@ -81,9 +81,20 @@ essence of a Gujarati wedding:
 ---
 
 ## Future Roadmap
+## Future Roadmap
 
-* **Current Status:** v1.0 (First Official Release) – Fully functional 
-  interactive UI, validated domain dataset, and active RAG orchestration pipeline.
-* **Next Sprint Iterations:** Expanding evaluation frameworks, refining data 
-  retrieval speeds, and mapping out structural pipelines to scale the dataset 
-  into adjacent South Asian regional traditions.
+The product is currently in active development. While v1.0 delivers a functional 
+Minimum Viable Product (MVP), the current development sprint is focused on the 
+following backlog items:
+
+* **Retrieval Tuning:** Actively refining chunking strategies and prompt 
+  context windows to increase retrieval precision and response optimization.
+* **Social Collaboration Features:** Engineering a pipeline to allow users 
+  to export, share, or collaborate on generated wedding planning workflows 
+  with family members.
+* **UI/UX Polish and Visual Identity:** Optimizing the interface layouts, 
+  streamlining the CSS styling, and establishing a cohesive brand identity to 
+  elevate the overall user experience.
+* **Scale Architecture:** Mapping out structural data ingestion pipelines to 
+  seamlessly scale the validated dataset into adjacent South Asian regional 
+  traditions.
