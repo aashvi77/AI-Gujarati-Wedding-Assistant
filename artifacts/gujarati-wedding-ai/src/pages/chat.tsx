@@ -27,6 +27,7 @@ export default function ChatPage() {
 
   const [inputValue, setInputValue] = useState("");
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [copiedId, setCopiedId] = useState<number | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
 
@@ -71,6 +72,16 @@ export default function ChatPage() {
   const handleNewChat = () => {
     resetChat();
     setSidebarOpen(false);
+  };
+
+  const handleCopy = async (text: string, id: number) => {
+    try {
+      await navigator.clipboard.writeText(text);
+      setCopiedId(id);
+      setTimeout(() => setCopiedId(null), 2000);
+    } catch {
+      // fallback
+    }
   };
 
   const inChatMode = hasSentFirst;
