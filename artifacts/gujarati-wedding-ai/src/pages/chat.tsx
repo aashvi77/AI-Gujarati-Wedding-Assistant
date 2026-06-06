@@ -351,19 +351,30 @@ export default function ChatPage() {
                         transition={{ duration: 0.25 }}
                         className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}
                       >
-                        <div
-                          className={`max-w-[82%] sm:max-w-[75%] px-4 py-3 rounded-2xl text-sm leading-relaxed shadow-sm whitespace-pre-wrap ${
-                            msg.role === "user"
-                              ? "text-white rounded-tr-sm"
-                              : "bg-white text-gray-800 border rounded-tl-sm"
-                          }`}
-                          style={
-                            msg.role === "user"
-                              ? { background: RED }
-                              : { borderColor: "rgba(151,64,70,0.2)" }
-                          }
-                        >
-                          {msg.content}
+                        <div className="flex flex-col" style={{ maxWidth: "82%" }}>
+                          <div
+                            className={`px-4 py-3 rounded-2xl text-sm leading-relaxed shadow-sm whitespace-pre-wrap ${
+                              msg.role === "user"
+                                ? "text-white rounded-tr-sm"
+                                : "bg-white text-gray-800 border rounded-tl-sm"
+                            }`}
+                            style={
+                              msg.role === "user"
+                                ? { background: RED }
+                                : { borderColor: "rgba(151,64,70,0.2)" }
+                            }
+                          >
+                            {msg.content}
+                          </div>
+                          {msg.role === "assistant" && (
+                            <button
+                              onClick={() => handleCopy(msg.content, msg.id)}
+                              className="mt-1.5 self-start flex items-center gap-1 text-xs px-2 py-1 rounded-lg transition-all hover:opacity-70"
+                              style={{ color: RED, background: "rgba(151,64,70,0.08)" }}
+                            >
+                              {copiedId === msg.id ? "✓ Copied!" : "⧉ Copy"}
+                            </button>
+                          )}
                         </div>
                       </motion.div>
                     ))}
