@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { useChat } from "@/hooks/use-chat";
-import { Send, Plus, MessageSquare, Menu, X, Copy, Check } from "lucide-react";
+import { Send, Plus, MessageSquare, Menu, X, Copy, Check, Mic, MicOff } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 const RED = "#974046";
@@ -28,6 +28,7 @@ export default function ChatPage() {
   const [inputValue, setInputValue] = useState("");
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [copiedId, setCopiedId] = useState<number | null>(null);
+  const [isListening, setIsListening] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
 
@@ -82,6 +83,36 @@ export default function ChatPage() {
     } catch {
       // fallback
     }
+  };
+
+  const handleMic = () => {
+    const SpeechRecognition =
+      (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
+    if (!SpeechRecognition) {
+      alert("Sorry, your browser doesn't support voice input. Try Chrome!");
+      return;
+    }
+    if (isListening) {
+      setIsListening(false);
+      return;
+    }
+    const recognition = new SpeechRecognition();
+    recognition.lang = "en-US";
+    recognition.interimResults = false;
+    recognition.maxAlternatives = 1;
+    setIsListening(true);
+    recognition.start();
+    recognition.onresult = (event: any) => {
+      const transcript = event.results[0][0].transcript;
+      setInputValue((prev) => (prev ? prev + " " + transcript : transcript));
+      setIsListening(false);
+      if (inputRef.current) {
+        inputRef.current.style.height = "auto";
+        inputRef.current.style.height = Math.min(inputRef.current.scrollHeight, 160) + "px";
+      }
+    };
+    recognition.onerror = () => setIsListening(false);
+    recognition.onend = () => setIsListening(false);
   };
 
   const inChatMode = hasSentFirst;
