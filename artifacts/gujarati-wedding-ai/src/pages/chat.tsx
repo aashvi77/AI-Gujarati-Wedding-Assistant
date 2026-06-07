@@ -273,8 +273,8 @@ export default function ChatPage() {
                         onChange={handleInput}
                         onKeyDown={handleKeyDown}
                         placeholder="Ask a question about Gujarati weddings..."
-                        className="flex-1 bg-transparent resize-none outline-none text-sm text-foreground placeholder:text-muted-foreground leading-relaxed py-1 max-h-40"
-                        style={{ height: "auto" }}
+                        className="flex-1 bg-transparent resize-none outline-none text-sm text-foreground placeholder:text-muted-foreground max-h-40 self-center"
+                        style={{ height: "auto", lineHeight: "1.5", paddingTop: "2px", paddingBottom: "2px" }}
                       />
                       <button
                         onClick={handleSubmit}
@@ -437,8 +437,8 @@ export default function ChatPage() {
                       onKeyDown={handleKeyDown}
                       placeholder="Ask a follow-up question..."
                       disabled={isTyping}
-                      className="flex-1 bg-transparent resize-none outline-none text-sm text-foreground placeholder:text-muted-foreground leading-relaxed py-1 max-h-40 disabled:opacity-60"
-                      style={{ height: "auto" }}
+                      className="flex-1 bg-transparent resize-none outline-none text-sm text-foreground placeholder:text-muted-foreground max-h-40 disabled:opacity-60 self-center"
+                      style={{ height: "auto", lineHeight: "1.5", paddingTop: "2px", paddingBottom: "2px" }}
                     />
                     <button
                       onClick={handleSubmit}
