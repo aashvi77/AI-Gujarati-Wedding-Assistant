@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { useChat } from "@/hooks/use-chat";
-import { Send, Plus, MessageSquare, Menu, X } from "lucide-react";
+import { Send, Plus, MessageSquare, Menu, X, Copy, Check } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 const RED = "#974046";
@@ -369,10 +369,14 @@ export default function ChatPage() {
                           {msg.role === "assistant" && (
                             <button
                               onClick={() => handleCopy(msg.content, msg.id)}
-                              className="mt-1.5 self-start flex items-center gap-1 text-xs px-2 py-1 rounded-lg transition-all hover:opacity-70"
-                              style={{ color: RED, background: "rgba(151,64,70,0.08)" }}
+                              className="mt-1.5 self-start p-1 rounded transition-all hover:opacity-60"
+                              style={{ color: "rgba(151,64,70,0.5)" }}
+                              title="Copy"
                             >
-                              {copiedId === msg.id ? "✓ Copied!" : "⧉ Copy"}
+                              {copiedId === msg.id
+                                ? <Check className="w-3.5 h-3.5" style={{ color: RED }} />
+                                : <Copy className="w-3.5 h-3.5" />
+                              }
                             </button>
                           )}
                         </div>
