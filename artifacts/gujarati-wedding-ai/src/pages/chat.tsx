@@ -215,7 +215,7 @@ export default function ChatPage() {
               {/* Frosted glass card */}
               <div className="relative z-10 w-full max-w-5xl mx-auto px-4 py-8 flex flex-col items-center">
                 <div
-                  className="w-full rounded-3xl px-16 py-8 flex flex-col items-center"
+                  className="w-full rounded-3xl px-5 sm:px-10 md:px-16 py-8 flex flex-col items-center"
                   style={{
                     background: "rgba(240, 233, 222, 0.85)",
                     backdropFilter: "blur(20px)",
@@ -229,7 +229,7 @@ export default function ChatPage() {
                     initial={{ scale: 0.8, opacity: 0 }}
                     animate={{ scale: 1, opacity: 1 }}
                     transition={{ delay: 0.1, duration: 0.5, ease: "easeOut" }}
-                    className="w-20 h-20 rounded-2xl flex items-center justify-center mb-6 shadow-lg"
+                    className="w-14 h-14 sm:w-20 sm:h-20 rounded-2xl flex items-center justify-center mb-4 sm:mb-6 shadow-lg"
                     style={{ background: RED }}
                   >
                     <span className="text-4xl text-white select-none" style={{ fontFamily: "serif" }}>
@@ -241,7 +241,7 @@ export default function ChatPage() {
                     initial={{ opacity: 0, y: 12 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.15, duration: 0.45 }}
-                    className="text-4xl sm:text-5xl font-bold font-serif text-foreground text-center leading-tight mb-3 whitespace-nowrap"
+                    className="text-2xl sm:text-4xl md:text-5xl font-bold font-serif text-foreground text-center leading-tight mb-3"
                   >
                     AI Gujarati Wedding Assistant
                   </motion.h1>
@@ -250,7 +250,7 @@ export default function ChatPage() {
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.22, duration: 0.45 }}
-                    className="text-muted-foreground text-center text-base sm:text-lg max-w-2xl mb-8 leading-relaxed"
+                    className="text-muted-foreground text-center text-sm sm:text-base md:text-lg max-w-2xl mb-6 sm:mb-8 leading-relaxed"
                   >
                     Ask me about Gujarati wedding traditions, ceremonies, timelines, and customs
                   </motion.p>
@@ -298,7 +298,7 @@ export default function ChatPage() {
                       <button
                         key={s}
                         onClick={() => handleSuggestion(s)}
-                        className="text-sm px-4 py-3 rounded-xl bg-white/70 text-muted-foreground hover:text-foreground hover:bg-[#e8d9c8] hover:border-[#974046] transition-all text-center leading-snug"
+                        className="text-xs sm:text-sm px-3 sm:px-4 py-2 sm:py-3 rounded-xl bg-white/70 text-muted-foreground hover:text-foreground hover:bg-[#e8d9c8] hover:border-[#974046] transition-all text-center leading-snug"
                         style={{ border: "3px solid rgba(151,64,70,0.6)" }}
                       >
                         {s}
@@ -333,7 +333,7 @@ export default function ChatPage() {
                 </div>
                 <button
                   onClick={handleNewChat}
-                  className="flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-full bg-white/15 hover:bg-white/25 transition-colors active:scale-95"
+                  className="flex items-center gap-1 text-xs font-medium px-2.5 py-1.5 rounded-full bg-white/15 hover:bg-white/25 transition-colors active:scale-95 whitespace-nowrap"
                 >
                   <Plus className="w-3.5 h-3.5" />
                   New Chat
