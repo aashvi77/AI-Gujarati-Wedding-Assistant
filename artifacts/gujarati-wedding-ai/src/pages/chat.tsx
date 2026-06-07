@@ -308,6 +308,17 @@ export default function ChatPage() {
                         style={{ height: "auto", lineHeight: "1.5", paddingTop: "2px", paddingBottom: "2px" }}
                       />
                       <button
+                        onClick={handleMic}
+                        className="shrink-0 w-11 h-11 rounded-xl flex items-center justify-center transition-all active:scale-95"
+                        style={{ background: isListening ? "#c0392b" : "rgba(151,64,70,0.1)" }}
+                        title="Voice input"
+                      >
+                        {isListening
+                          ? <MicOff className="w-4 h-4" style={{ color: "white" }} />
+                          : <Mic className="w-4 h-4" style={{ color: RED }} />
+                        }
+                      </button>
+                      <button
                         onClick={handleSubmit}
                         disabled={!inputValue.trim()}
                         className="shrink-0 w-11 h-11 rounded-xl disabled:opacity-30 flex items-center justify-center transition-all active:scale-95 hover:brightness-110"
@@ -471,6 +482,18 @@ export default function ChatPage() {
                       className="flex-1 bg-transparent resize-none outline-none text-sm text-foreground placeholder:text-muted-foreground max-h-40 disabled:opacity-60 self-center"
                       style={{ height: "auto", lineHeight: "1.5", paddingTop: "2px", paddingBottom: "2px" }}
                     />
+                    <button
+                      onClick={handleMic}
+                      disabled={isTyping}
+                      className="shrink-0 w-11 h-11 rounded-xl flex items-center justify-center transition-all active:scale-95 disabled:opacity-30"
+                      style={{ background: isListening ? "#c0392b" : "rgba(151,64,70,0.1)" }}
+                      title="Voice input"
+                    >
+                      {isListening
+                        ? <MicOff className="w-4 h-4" style={{ color: "white" }} />
+                        : <Mic className="w-4 h-4" style={{ color: RED }} />
+                      }
+                    </button>
                     <button
                       onClick={handleSubmit}
                       disabled={!inputValue.trim() || isTyping}
