@@ -311,7 +311,7 @@ export default function ChatPage() {
                         onClick={handleMic}
                         className="shrink-0 flex items-center justify-center transition-all active:scale-95 hover:opacity-70"
                         title="Voice input"
-                        style={{ background: "none", border: "none", padding: "4px" }}
+                        style={{ background: "none", border: "none", padding: "4px", alignSelf: "center" }}
                       >
                         <Mic className="w-5 h-5" style={{ color: isListening ? "#c0392b" : "rgba(151,64,70,0.5)" }} />
                       </button>
@@ -484,7 +484,7 @@ export default function ChatPage() {
                       disabled={isTyping}
                       className="shrink-0 flex items-center justify-center transition-all active:scale-95 disabled:opacity-30 hover:opacity-70"
                       title="Voice input"
-                      style={{ background: "none", border: "none", padding: "4px" }}
+                      style={{ background: "none", border: "none", padding: "4px", alignSelf: "center" }}
                     >
                       <Mic className="w-5 h-5" style={{ color: isListening ? "#c0392b" : "rgba(151,64,70,0.5)" }} />
                     </button>
