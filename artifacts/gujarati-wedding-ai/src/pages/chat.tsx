@@ -309,14 +309,11 @@ export default function ChatPage() {
                       />
                       <button
                         onClick={handleMic}
-                        className="shrink-0 w-11 h-11 rounded-xl flex items-center justify-center transition-all active:scale-95"
-                        style={{ background: isListening ? "#c0392b" : "rgba(151,64,70,0.1)" }}
+                        className="shrink-0 flex items-center justify-center transition-all active:scale-95 hover:opacity-70"
                         title="Voice input"
+                        style={{ background: "none", border: "none", padding: "4px" }}
                       >
-                        {isListening
-                          ? <MicOff className="w-4 h-4" style={{ color: "white" }} />
-                          : <Mic className="w-4 h-4" style={{ color: RED }} />
-                        }
+                        <Mic className="w-5 h-5" style={{ color: isListening ? "#c0392b" : "rgba(151,64,70,0.5)" }} />
                       </button>
                       <button
                         onClick={handleSubmit}
@@ -485,14 +482,11 @@ export default function ChatPage() {
                     <button
                       onClick={handleMic}
                       disabled={isTyping}
-                      className="shrink-0 w-11 h-11 rounded-xl flex items-center justify-center transition-all active:scale-95 disabled:opacity-30"
-                      style={{ background: isListening ? "#c0392b" : "rgba(151,64,70,0.1)" }}
+                      className="shrink-0 flex items-center justify-center transition-all active:scale-95 disabled:opacity-30 hover:opacity-70"
                       title="Voice input"
+                      style={{ background: "none", border: "none", padding: "4px" }}
                     >
-                      {isListening
-                        ? <MicOff className="w-4 h-4" style={{ color: "white" }} />
-                        : <Mic className="w-4 h-4" style={{ color: RED }} />
-                      }
+                      <Mic className="w-5 h-5" style={{ color: isListening ? "#c0392b" : "rgba(151,64,70,0.5)" }} />
                     </button>
                     <button
                       onClick={handleSubmit}
