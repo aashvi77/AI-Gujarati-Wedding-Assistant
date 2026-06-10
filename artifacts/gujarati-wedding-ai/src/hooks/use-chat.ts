@@ -3,7 +3,6 @@ import {
   useCreateOpenaiConversation,
   useListOpenaiMessages,
   useListOpenaiConversations,
-  useDeleteOpenaiConversation,
   getListOpenaiMessagesQueryKey,
   getListOpenaiConversationsQueryKey,
 } from "@workspace/api-client-react";
@@ -24,7 +23,6 @@ export function useChat() {
   const [hasSentFirst, setHasSentFirst] = useState(false);
 
   const createConversation = useCreateOpenaiConversation();
-  const deleteConv = useDeleteOpenaiConversation();
 
   const { data: conversations } = useListOpenaiConversations();
 
@@ -141,15 +139,18 @@ export function useChat() {
 
   const deleteConversation = useCallback(async (id: number) => {
     try {
-      await deleteConv.mutateAsync({ id });
-      if (activeConversationId === id) {
-        resetChat();
+      const BASE = import.meta.env.BASE_URL.replace(/\/$/, "");
+      await fetch(`${BASE}/api/openai/conversations/${id}`, { method: "DELETE" });
+      if (conversationId === id) {
+        setConversationId(undefined);
+        setLocalMessages([]);
+        setHasSentFirst(false);
       }
       queryClient.invalidateQueries({ queryKey: getListOpenaiConversationsQueryKey() });
     } catch {
       // ignore
     }
-  }, [deleteConv, activeConversationId, queryClient]);
+  }, [conversationId, queryClient]);
 
   const loadConversation = useCallback(async (id: number) => {
     setConversationId(id);
