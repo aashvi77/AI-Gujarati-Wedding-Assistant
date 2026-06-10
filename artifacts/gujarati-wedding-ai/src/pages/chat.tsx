@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { useChat } from "@/hooks/use-chat";
-import { Send, Plus, MessageSquare, Menu, X, Copy, Check, Mic, MicOff } from "lucide-react";
+import { Send, Plus, MessageSquare, Menu, X, Copy, Check, Mic, MicOff, Trash2 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 const RED = "#974046";
@@ -21,6 +21,7 @@ export default function ChatPage() {
     sendMessage,
     resetChat,
     loadConversation,
+    deleteConversation,
     conversations,
     activeConversationId,
   } = useChat();
@@ -176,10 +177,9 @@ export default function ChatPage() {
                   </p>
                 ) : (
                   conversations.slice().reverse().map((conv) => (
-                    <button
+                    <div
                       key={conv.id}
-                      onClick={() => handleLoadConversation(conv.id)}
-                      className="w-full flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-sm text-left transition-all"
+                      className="group flex items-center gap-1 rounded-xl transition-all"
                       style={{
                         background: activeConversationId === conv.id
                           ? "rgba(151,64,70,0.15)"
@@ -187,22 +187,25 @@ export default function ChatPage() {
                         border: activeConversationId === conv.id
                           ? "1.5px solid rgba(151,64,70,0.4)"
                           : "1.5px solid transparent",
-                        color: "#3a2020",
-                      }}
-                      onMouseEnter={e => {
-                        if (activeConversationId !== conv.id) {
-                          (e.currentTarget as HTMLButtonElement).style.background = "rgba(151,64,70,0.08)";
-                        }
-                      }}
-                      onMouseLeave={e => {
-                        if (activeConversationId !== conv.id) {
-                          (e.currentTarget as HTMLButtonElement).style.background = "transparent";
-                        }
                       }}
                     >
-                      <MessageSquare className="w-4 h-4 shrink-0" style={{ color: RED }} />
-                      <span className="truncate">{conv.title || "Conversation"}</span>
-                    </button>
+                      <button
+                        onClick={() => handleLoadConversation(conv.id)}
+                        className="flex-1 flex items-center gap-2.5 px-3 py-2.5 text-sm text-left"
+                        style={{ color: "#3a2020" }}
+                      >
+                        <MessageSquare className="w-4 h-4 shrink-0" style={{ color: RED }} />
+                        <span className="truncate">{conv.title || "Conversation"}</span>
+                      </button>
+                      <button
+                        onClick={() => deleteConversation(conv.id)}
+                        className="opacity-0 group-hover:opacity-100 shrink-0 p-2 rounded-lg transition-all hover:opacity-70 mr-1"
+                        title="Delete conversation"
+                        style={{ color: "rgba(151,64,70,0.5)" }}
+                      >
+                        <Trash2 className="w-3.5 h-3.5" />
+                      </button>
+                    </div>
                   ))
                 )}
               </div>
