@@ -250,8 +250,8 @@ router.post("/conversations/:id/messages", async (req, res) => {
     let fullResponse = "";
 
     const stream = await openai.chat.completions.create({
-      model: "llama-3.3-70b-versatile",
-      max_completion_tokens: 1024,
+      model: "openai/gpt-oss-120b",
+      max_completion_tokens: 4096,
       messages: chatMessages,
       stream: true,
     });
