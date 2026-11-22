@@ -170,7 +170,7 @@ export default function ChatPage() {
               </div>
 
               {/* Conversation list */}
-              <div className="flex-1 overflow-y-auto px-3 py-3 space-y-1">
+              <div className="flex-1 overflow-y-auto overflow-x-hidden px-3 py-3 space-y-1">
                 {conversations.length === 0 ? (
                   <p className="text-xs text-center py-8" style={{ color: "rgba(151,64,70,0.5)" }}>
                     No past conversations yet
@@ -191,11 +191,11 @@ export default function ChatPage() {
                     >
                       <button
                         onClick={() => handleLoadConversation(conv.id)}
-                        className="flex-1 flex items-center gap-2.5 px-3 py-2.5 text-sm text-left"
+                        className="flex-1 min-w-0 flex items-center gap-2.5 px-3 py-2.5 text-sm text-left"
                         style={{ color: "#3a2020" }}
                       >
                         <MessageSquare className="w-4 h-4 shrink-0" style={{ color: RED }} />
-                        <span className="truncate">{conv.title || "Conversation"}</span>
+                        <span className="truncate min-w-0">{conv.title || "Conversation"}</span>
                       </button>
                       <button
                         onClick={() => deleteConversation(conv.id)}
