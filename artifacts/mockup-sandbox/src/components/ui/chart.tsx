@@ -1,511 +1,365 @@
-import { useState, useRef, useEffect } from "react";
-import { useChat } from "@/hooks/use-chat";
-import { Send, Plus, MessageSquare, Menu, X, Copy, Check, Mic, MicOff, Trash2 } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
+import * as React from "react"
+import * as RechartsPrimitive from "recharts"
 
-const RED = "#974046";
+import { cn } from "@/lib/utils"
 
-const SUGGESTIONS = [
-  "What happens during the Pithi ceremony?",
-  "Explain the Saptapadi (seven steps)",
-  "What does the bride typically wear?",
-  "What is Garba and when is it held?",
-];
+const THEMES = { light: "", dark: ".dark" } as const
 
-export default function ChatPage() {
-  const {
-    messages,
-    streamingMessage,
-    isTyping,
-    hasSentFirst,
-    sendMessage,
-    resetChat,
-    loadConversation,
-    deleteConversation,
-    conversations,
-    activeConversationId,
-  } = useChat();
+export type ChartConfig = {
+  [k in string]: {
+    label?: React.ReactNode
+    icon?: React.ComponentType
+  } & (
+    | { color?: string; theme?: never }
+    | { color?: never; theme: Record<keyof typeof THEMES, string> }
+  )
+}
 
-  const [inputValue, setInputValue] = useState("");
-  const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [copiedId, setCopiedId] = useState<number | null>(null);
-  const [isListening, setIsListening] = useState(false);
-  const messagesEndRef = useRef<HTMLDivElement>(null);
-  const inputRef = useRef<HTMLTextAreaElement>(null);
+type ChartContextProps = {
+  config: ChartConfig
+}
 
-  const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  };
+const ChartContext = React.createContext<ChartContextProps | null>(null)
 
-  useEffect(() => {
-    scrollToBottom();
-  }, [messages, streamingMessage, isTyping]);
+function useChart() {
+  const context = React.useContext(ChartContext)
 
-  const handleInput = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setInputValue(e.target.value);
-    e.target.style.height = "auto";
-    e.target.style.height = Math.min(e.target.scrollHeight, 160) + "px";
-  };
+  if (!context) {
+    throw new Error("useChart must be used within a <ChartContainer />")
+  }
 
-  const handleSubmit = (e?: React.FormEvent) => {
-    e?.preventDefault();
-    if (!inputValue.trim() || isTyping) return;
-    sendMessage(inputValue.trim());
-    setInputValue("");
-    if (inputRef.current) inputRef.current.style.height = "auto";
-  };
+  return context
+}
 
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
-    if (e.key === "Enter" && !e.shiftKey) {
-      e.preventDefault();
-      handleSubmit();
-    }
-  };
-
-  const handleSuggestion = (text: string) => {
-    sendMessage(text);
-  };
-
-  const handleLoadConversation = (id: number) => {
-    loadConversation(id);
-    setSidebarOpen(false);
-  };
-
-  const handleNewChat = () => {
-    resetChat();
-    setSidebarOpen(false);
-  };
-
-  const handleCopy = async (text: string, id: number) => {
-    try {
-      await navigator.clipboard.writeText(text);
-      setCopiedId(id);
-      setTimeout(() => setCopiedId(null), 2000);
-    } catch {
-      // fallback
-    }
-  };
-
-  const handleMic = () => {
-    const SpeechRecognition =
-      (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
-    if (!SpeechRecognition) {
-      alert("Sorry, your browser doesn't support voice input. Try Chrome!");
-      return;
-    }
-    if (isListening) {
-      setIsListening(false);
-      return;
-    }
-    const recognition = new SpeechRecognition();
-    recognition.lang = "en-US";
-    recognition.interimResults = false;
-    recognition.maxAlternatives = 1;
-    setIsListening(true);
-    recognition.start();
-    recognition.onresult = (event: any) => {
-      const transcript = event.results[0][0].transcript;
-      setInputValue((prev) => (prev ? prev + " " + transcript : transcript));
-      setIsListening(false);
-      if (inputRef.current) {
-        inputRef.current.style.height = "auto";
-        inputRef.current.style.height = Math.min(inputRef.current.scrollHeight, 160) + "px";
-      }
-    };
-    recognition.onerror = () => setIsListening(false);
-    recognition.onend = () => setIsListening(false);
-  };
-
-  const inChatMode = hasSentFirst;
+const ChartContainer = React.forwardRef<
+  HTMLDivElement,
+  React.ComponentProps<"div"> & {
+    config: ChartConfig
+    children: React.ComponentProps<
+      typeof RechartsPrimitive.ResponsiveContainer
+    >["children"]
+  }
+>(({ id, className, children, config, ...props }, ref) => {
+  const uniqueId = React.useId()
+  const chartId = `chart-${id || uniqueId.replace(/:/g, "")}`
 
   return (
-    <div className="flex h-[100dvh] font-sans overflow-hidden relative">
-
-      {/* ── SIDEBAR — always available ── */}
-      <AnimatePresence>
-        {sidebarOpen && (
-          <>
-            <motion.div
-              key="backdrop"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="fixed inset-0 z-20 bg-black/30"
-              onClick={() => setSidebarOpen(false)}
-            />
-
-            <motion.div
-              key="sidebar"
-              initial={{ x: -280 }}
-              animate={{ x: 0 }}
-              exit={{ x: -280 }}
-              transition={{ type: "spring", stiffness: 300, damping: 30 }}
-              className="fixed top-0 left-0 bottom-0 w-72 z-30 flex flex-col shadow-2xl"
-              style={{ background: "#f0e9de" }}
-            >
-              {/* Sidebar header */}
-              <div
-                className="flex items-center justify-between px-4 py-4 text-white"
-                style={{ background: RED }}
-              >
-                <span className="font-semibold font-serif text-base">Chat History</span>
-                <button
-                  onClick={() => setSidebarOpen(false)}
-                  className="p-1 rounded-lg hover:bg-white/20 transition-colors"
-                >
-                  <X className="w-5 h-5" />
-                </button>
-              </div>
-
-              {/* New Chat button */}
-              <div className="px-3 py-3 border-b" style={{ borderColor: "rgba(151,64,70,0.2)" }}>
-                <button
-                  onClick={handleNewChat}
-                  className="w-full flex items-center gap-2 px-3 py-2.5 rounded-xl text-sm font-medium transition-all text-white"
-                  style={{ background: RED }}
-                >
-                  <Plus className="w-4 h-4" />
-                  New Chat
-                </button>
-              </div>
-
-              {/* Conversation list */}
-              <div className="flex-1 overflow-y-auto overflow-x-hidden px-3 py-3 space-y-1">
-                {conversations.length === 0 ? (
-                  <p className="text-xs text-center py-8" style={{ color: "rgba(151,64,70,0.5)" }}>
-                    No past conversations yet
-                  </p>
-                ) : (
-                  conversations.slice().reverse().map((conv) => (
-                    <div
-                      key={conv.id}
-                      className="group flex items-center gap-1 rounded-xl transition-all"
-                      style={{
-                        background: activeConversationId === conv.id
-                          ? "rgba(151,64,70,0.15)"
-                          : "transparent",
-                        border: activeConversationId === conv.id
-                          ? "1.5px solid rgba(151,64,70,0.4)"
-                          : "1.5px solid transparent",
-                      }}
-                    >
-                      <button
-                        onClick={() => handleLoadConversation(conv.id)}
-                        className="flex-1 min-w-0 flex items-center gap-2.5 px-3 py-2.5 text-sm text-left"
-                        style={{ color: "#3a2020" }}
-                      >
-                        <MessageSquare className="w-4 h-4 shrink-0" style={{ color: RED }} />
-                        <span className="truncate min-w-0">{conv.title || "Conversation"}</span>
-                      </button>
-                      <button
-                        onClick={() => deleteConversation(conv.id)}
-                        className="opacity-0 group-hover:opacity-100 shrink-0 p-2 rounded-lg transition-all hover:opacity-70 mr-1"
-                        title="Delete conversation"
-                        style={{ color: "rgba(151,64,70,0.5)" }}
-                      >
-                        <Trash2 className="w-3.5 h-3.5" />
-                      </button>
-                    </div>
-                  ))
-                )}
-              </div>
-            </motion.div>
-          </>
+    <ChartContext.Provider value={{ config }}>
+      <div
+        data-chart={chartId}
+        ref={ref}
+        className={cn(
+          "flex aspect-video justify-center text-xs [&_.recharts-cartesian-axis-tick_text]:fill-muted-foreground [&_.recharts-cartesian-grid_line[stroke='#ccc']]:stroke-border/50 [&_.recharts-curve.recharts-tooltip-cursor]:stroke-border [&_.recharts-dot[stroke='#fff']]:stroke-transparent [&_.recharts-layer]:outline-none [&_.recharts-polar-grid_[stroke='#ccc']]:stroke-border [&_.recharts-radial-bar-background-sector]:fill-muted [&_.recharts-rectangle.recharts-tooltip-cursor]:fill-muted [&_.recharts-reference-line_[stroke='#ccc']]:stroke-border [&_.recharts-sector[stroke='#fff']]:stroke-transparent [&_.recharts-sector]:outline-none [&_.recharts-surface]:outline-none",
+          className
         )}
-      </AnimatePresence>
-
-      {/* ── MAIN CONTENT ── */}
-      <div className="flex flex-col flex-1 min-w-0">
-        <AnimatePresence mode="wait">
-          {!inChatMode ? (
-            /* ─── LANDING STATE ─── */
-            <motion.div
-              key="landing"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.35, ease: "easeInOut" }}
-              className="flex flex-col items-center justify-center flex-1 min-h-[100dvh] relative"
-            >
-              {/* Background image */}
-              <div
-                className="absolute inset-0 z-0"
-                style={{
-                  backgroundImage: "url(/Gujarati_Wedding_Planner.jpeg)",
-                  backgroundSize: "cover",
-                  backgroundPosition: "center",
-                  backgroundRepeat: "no-repeat",
-                }}
-              />
-
-              {/* Hamburger button on landing page — top left */}
-              <button
-                onClick={() => setSidebarOpen(true)}
-                className="absolute top-4 left-4 z-10 p-2 transition-all hover:opacity-80 active:scale-95"
-              >
-                <Menu className="w-8 h-8 text-white" style={{ filter: "drop-shadow(0 2px 4px rgba(0,0,0,0.6))" }} />
-              </button>
-
-              {/* Frosted glass card */}
-              <div className="relative z-10 w-full max-w-5xl mx-auto px-4 py-8 flex flex-col items-center">
-                <div
-                  className="w-full rounded-3xl px-5 sm:px-10 md:px-16 py-8 flex flex-col items-center"
-                  style={{
-                    background: "rgba(240, 233, 222, 0.85)",
-                    backdropFilter: "blur(20px)",
-                    WebkitBackdropFilter: "blur(20px)",
-                    boxShadow: "0 8px 48px rgba(0,0,0,0.14)",
-                    border: `9px solid ${RED}`,
-                  }}
-                >
-                  {/* Logo */}
-                  <motion.div
-                    initial={{ scale: 0.8, opacity: 0 }}
-                    animate={{ scale: 1, opacity: 1 }}
-                    transition={{ delay: 0.1, duration: 0.5, ease: "easeOut" }}
-                    className="w-14 h-14 sm:w-20 sm:h-20 rounded-2xl flex items-center justify-center mb-4 sm:mb-6 shadow-lg"
-                    style={{ background: RED }}
-                  >
-                    <span className="text-4xl text-white select-none" style={{ fontFamily: "serif" }}>
-                      ॐ
-                    </span>
-                  </motion.div>
-
-                  <motion.h1
-                    initial={{ opacity: 0, y: 12 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.15, duration: 0.45 }}
-                    className="text-2xl sm:text-4xl md:text-5xl font-bold font-serif text-foreground text-center leading-tight mb-3"
-                  >
-                    AI Gujarati Wedding Assistant
-                  </motion.h1>
-
-                  <motion.p
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.22, duration: 0.45 }}
-                    className="text-muted-foreground text-center text-sm sm:text-base md:text-lg max-w-2xl mb-6 sm:mb-8 leading-relaxed"
-                  >
-                    Ask me about Gujarati wedding traditions, ceremonies, timelines, and customs
-                  </motion.p>
-
-                  {/* Input box */}
-                  <motion.div
-                    initial={{ opacity: 0, y: 14 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.28, duration: 0.45 }}
-                    className="w-full mb-4"
-                  >
-                    <div
-                      className="relative flex items-end bg-white/80 rounded-2xl shadow-md px-4 py-3 gap-2 transition-shadow"
-                      style={{ border: "3px solid rgba(151,64,70,0.6)" }}
-                    >
-                      <textarea
-                        ref={inputRef}
-                        rows={1}
-                        value={inputValue}
-                        onChange={handleInput}
-                        onKeyDown={handleKeyDown}
-                        placeholder="Ask a question about Gujarati weddings..."
-                        className="flex-1 bg-transparent resize-none outline-none text-sm text-foreground placeholder:text-muted-foreground max-h-40 self-center"
-                        style={{ height: "auto", lineHeight: "1.5", paddingTop: "2px", paddingBottom: "2px" }}
-                      />
-                      <button
-                        onClick={handleMic}
-                        className="shrink-0 flex items-center justify-center transition-all active:scale-95 hover:opacity-70"
-                        title="Voice input"
-                        style={{ background: "none", border: "none", padding: "4px", alignSelf: "center" }}
-                      >
-                        <Mic className="w-5 h-5" style={{ color: isListening ? "#c0392b" : "rgba(151,64,70,0.5)" }} />
-                      </button>
-                      <button
-                        onClick={handleSubmit}
-                        disabled={!inputValue.trim()}
-                        className="shrink-0 w-11 h-11 rounded-xl disabled:opacity-30 flex items-center justify-center transition-all active:scale-95 hover:brightness-110"
-                        style={{ background: RED }}
-                      >
-                        <Send className="w-4 h-4 text-white ml-0.5" />
-                      </button>
-                    </div>
-                  </motion.div>
-
-                  {/* Suggestion chips */}
-                  <motion.div
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.36, duration: 0.45 }}
-                    className="grid grid-cols-2 gap-2 w-full"
-                  >
-                    {SUGGESTIONS.map((s) => (
-                      <button
-                        key={s}
-                        onClick={() => handleSuggestion(s)}
-                        className="text-xs sm:text-sm px-3 sm:px-4 py-2 sm:py-3 rounded-xl bg-white/70 text-muted-foreground hover:text-foreground hover:bg-[#e8d9c8] hover:border-[#974046] transition-all text-center leading-snug"
-                        style={{ border: "3px solid rgba(151,64,70,0.6)" }}
-                      >
-                        {s}
-                      </button>
-                    ))}
-                  </motion.div>
-                </div>
-              </div>
-            </motion.div>
-          ) : (
-            /* ─── CHAT STATE ─── */
-            <motion.div
-              key="chat"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.3 }}
-              className="flex flex-col flex-1 min-h-0"
-              style={{ background: "#f0e9de" }}
-            >
-              <header
-                className="flex-none px-4 py-3 flex items-center justify-between shadow-sm text-white"
-                style={{ background: RED }}
-              >
-                <div className="flex items-center gap-3">
-                  <button
-                    onClick={() => setSidebarOpen(true)}
-                    className="p-1.5 rounded-lg hover:bg-white/20 transition-colors"
-                  >
-                    <Menu className="w-7 h-7" />
-                  </button>
-                  <h1 className="text-base font-semibold font-serif truncate">AI Gujarati Wedding Assistant</h1>
-                </div>
-                <button
-                  onClick={handleNewChat}
-                  className="flex items-center gap-1 text-xs font-medium px-2.5 py-1.5 rounded-full bg-white/15 hover:bg-white/25 transition-colors active:scale-95 whitespace-nowrap"
-                >
-                  <Plus className="w-3.5 h-3.5" />
-                  New Chat
-                </button>
-              </header>
-
-              <main className="flex-1 overflow-y-auto px-4 py-6">
-                <div className="max-w-2xl mx-auto space-y-4">
-                  <AnimatePresence initial={false}>
-                    {messages.map((msg, i) => (
-                      <motion.div
-                        key={msg.id || i}
-                        initial={{ opacity: 0, y: 10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.25 }}
-                        className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}
-                      >
-                        <div className="flex flex-col" style={{ maxWidth: "82%" }}>
-                          <div
-                            className={`px-4 py-3 rounded-2xl text-sm leading-relaxed shadow-sm whitespace-pre-wrap ${
-                              msg.role === "user"
-                                ? "text-white rounded-tr-sm"
-                                : "bg-white text-gray-800 border rounded-tl-sm"
-                            }`}
-                            style={
-                              msg.role === "user"
-                                ? { background: RED }
-                                : { borderColor: "rgba(151,64,70,0.2)" }
-                            }
-                          >
-                            {msg.content}
-                          </div>
-                          {msg.role === "assistant" && (
-                            <button
-                              onClick={() => handleCopy(msg.content, msg.id)}
-                              className="mt-1.5 self-start p-1 rounded transition-all hover:opacity-60"
-                              style={{ color: "rgba(151,64,70,0.5)" }}
-                              title="Copy"
-                            >
-                              {copiedId === msg.id
-                                ? <Check className="w-3.5 h-3.5" style={{ color: RED }} />
-                                : <Copy className="w-3.5 h-3.5" />
-                              }
-                            </button>
-                          )}
-                        </div>
-                      </motion.div>
-                    ))}
-
-                    {isTyping && (
-                      <motion.div
-                        key="typing"
-                        initial={{ opacity: 0, y: 10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        className="flex justify-start"
-                      >
-                        <div
-                          className="max-w-[82%] sm:max-w-[75%] px-4 py-3 rounded-2xl rounded-tl-sm bg-white border shadow-sm text-sm leading-relaxed"
-                          style={{ borderColor: "rgba(151,64,70,0.2)" }}
-                        >
-                          {streamingMessage ? (
-                            <span className="whitespace-pre-wrap text-gray-800">{streamingMessage}</span>
-                          ) : (
-                            <span className="flex gap-1.5 items-center h-5">
-                              {[0, 0.18, 0.36].map((delay, k) => (
-                                <motion.span
-                                  key={k}
-                                  className="w-2 h-2 rounded-full block"
-                                  style={{ background: "rgba(151,64,70,0.4)" }}
-                                  animate={{ y: [0, -5, 0] }}
-                                  transition={{ repeat: Infinity, duration: 0.65, delay }}
-                                />
-                              ))}
-                            </span>
-                          )}
-                        </div>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-                  <div ref={messagesEndRef} />
-                </div>
-              </main>
-
-              <footer
-                className="flex-none px-4 py-3 border-t"
-                style={{ background: "#f0e9de", borderColor: "rgba(151,64,70,0.2)" }}
-              >
-                <div className="max-w-2xl mx-auto">
-                  <div
-                    className="relative flex items-end rounded-2xl shadow-sm px-4 py-3 gap-2 transition-shadow"
-                    style={{
-                      background: "white",
-                      border: "3px solid rgba(151,64,70,0.6)",
-                    }}
-                  >
-                    <textarea
-                      ref={inputRef}
-                      rows={1}
-                      value={inputValue}
-                      onChange={handleInput}
-                      onKeyDown={handleKeyDown}
-                      placeholder="Ask a follow-up question..."
-                      disabled={isTyping}
-                      className="flex-1 bg-transparent resize-none outline-none text-sm text-foreground placeholder:text-muted-foreground max-h-40 disabled:opacity-60 self-center"
-                      style={{ height: "auto", lineHeight: "1.5", paddingTop: "2px", paddingBottom: "2px" }}
-                    />
-                    <button
-                      onClick={handleMic}
-                      disabled={isTyping}
-                      className="shrink-0 flex items-center justify-center transition-all active:scale-95 disabled:opacity-30 hover:opacity-70"
-                      title="Voice input"
-                      style={{ background: "none", border: "none", padding: "4px", alignSelf: "center" }}
-                    >
-                      <Mic className="w-5 h-5" style={{ color: isListening ? "#c0392b" : "rgba(151,64,70,0.5)" }} />
-                    </button>
-                    <button
-                      onClick={handleSubmit}
-                      disabled={!inputValue.trim() || isTyping}
-                      className="shrink-0 w-11 h-11 rounded-xl disabled:opacity-30 flex items-center justify-center transition-all active:scale-95 hover:brightness-110"
-                      style={{ background: RED }}
-                    >
-                      <Send className="w-4 h-4 text-white ml-0.5" />
-                    </button>
-                  </div>
-                </div>
-              </footer>
-            </motion.div>
-          )}
-        </AnimatePresence>
+        {...props}
+      >
+        <ChartStyle id={chartId} config={config} />
+        <RechartsPrimitive.ResponsiveContainer>
+          {children}
+        </RechartsPrimitive.ResponsiveContainer>
       </div>
-    </div>
-  );
+    </ChartContext.Provider>
+  )
+})
+ChartContainer.displayName = "Chart"
+
+const ChartStyle = ({ id, config }: { id: string; config: ChartConfig }) => {
+  const colorConfig = Object.entries(config).filter(
+    ([, config]) => config.theme || config.color
+  )
+
+  if (!colorConfig.length) {
+    return null
+  }
+
+  return (
+    <style
+      dangerouslySetInnerHTML={{
+        __html: Object.entries(THEMES)
+          .map(
+            ([theme, prefix]) => `
+${prefix} [data-chart=${id}] {
+${colorConfig
+  .map(([key, itemConfig]) => {
+    const color =
+      itemConfig.theme?.[theme as keyof typeof itemConfig.theme] ||
+      itemConfig.color
+    return color ? `  --color-${key}: ${color};` : null
+  })
+  .join("\n")}
+}
+`
+          )
+          .join("\n"),
+      }}
+    />
+  )
+}
+
+const ChartTooltip = RechartsPrimitive.Tooltip
+
+const ChartTooltipContent = React.forwardRef<
+  HTMLDivElement,
+  React.ComponentProps<typeof RechartsPrimitive.Tooltip> &
+    React.ComponentProps<"div"> & {
+      hideLabel?: boolean
+      hideIndicator?: boolean
+      indicator?: "line" | "dot" | "dashed"
+      nameKey?: string
+      labelKey?: string
+    }
+>(
+  (
+    {
+      active,
+      payload,
+      className,
+      indicator = "dot",
+      hideLabel = false,
+      hideIndicator = false,
+      label,
+      labelFormatter,
+      labelClassName,
+      formatter,
+      color,
+      nameKey,
+      labelKey,
+    },
+    ref
+  ) => {
+    const { config } = useChart()
+
+    const tooltipLabel = React.useMemo(() => {
+      if (hideLabel || !payload?.length) {
+        return null
+      }
+
+      const [item] = payload
+      const key = `${labelKey || item?.dataKey || item?.name || "value"}`
+      const itemConfig = getPayloadConfigFromPayload(config, item, key)
+      const value =
+        !labelKey && typeof label === "string"
+          ? config[label as keyof typeof config]?.label || label
+          : itemConfig?.label
+
+      if (labelFormatter) {
+        return (
+          <div className={cn("font-medium", labelClassName)}>
+            {labelFormatter(value, payload)}
+          </div>
+        )
+      }
+
+      if (!value) {
+        return null
+      }
+
+      return <div className={cn("font-medium", labelClassName)}>{value}</div>
+    }, [
+      label,
+      labelFormatter,
+      payload,
+      hideLabel,
+      labelClassName,
+      config,
+      labelKey,
+    ])
+
+    if (!active || !payload?.length) {
+      return null
+    }
+
+    const nestLabel = payload.length === 1 && indicator !== "dot"
+
+    return (
+      <div
+        ref={ref}
+        className={cn(
+          "grid min-w-[8rem] items-start gap-1.5 rounded-lg border border-border/50 bg-background px-2.5 py-1.5 text-xs shadow-xl",
+          className
+        )}
+      >
+        {!nestLabel ? tooltipLabel : null}
+        <div className="grid gap-1.5">
+          {payload
+            .filter((item) => item.type !== "none")
+            .map((item, index) => {
+              const key = `${nameKey || item.name || item.dataKey || "value"}`
+              const itemConfig = getPayloadConfigFromPayload(config, item, key)
+              const indicatorColor = color || item.payload.fill || item.color
+
+              return (
+                <div
+                  key={item.dataKey}
+                  className={cn(
+                    "flex w-full flex-wrap items-stretch gap-2 [&>svg]:h-2.5 [&>svg]:w-2.5 [&>svg]:text-muted-foreground",
+                    indicator === "dot" && "items-center"
+                  )}
+                >
+                  {formatter && item?.value !== undefined && item.name ? (
+                    formatter(item.value, item.name, item, index, item.payload)
+                  ) : (
+                    <>
+                      {itemConfig?.icon ? (
+                        <itemConfig.icon />
+                      ) : (
+                        !hideIndicator && (
+                          <div
+                            className={cn(
+                              "shrink-0 rounded-[2px] border-[--color-border] bg-[--color-bg]",
+                              {
+                                "h-2.5 w-2.5": indicator === "dot",
+                                "w-1": indicator === "line",
+                                "w-0 border-[1.5px] border-dashed bg-transparent":
+                                  indicator === "dashed",
+                                "my-0.5": nestLabel && indicator === "dashed",
+                              }
+                            )}
+                            style={
+                              {
+                                "--color-bg": indicatorColor,
+                                "--color-border": indicatorColor,
+                              } as React.CSSProperties
+                            }
+                          />
+                        )
+                      )}
+                      <div
+                        className={cn(
+                          "flex flex-1 justify-between leading-none",
+                          nestLabel ? "items-end" : "items-center"
+                        )}
+                      >
+                        <div className="grid gap-1.5">
+                          {nestLabel ? tooltipLabel : null}
+                          <span className="text-muted-foreground">
+                            {itemConfig?.label || item.name}
+                          </span>
+                        </div>
+                        {item.value && (
+                          <span className="font-mono font-medium tabular-nums text-foreground">
+                            {item.value.toLocaleString()}
+                          </span>
+                        )}
+                      </div>
+                    </>
+                  )}
+                </div>
+              )
+            })}
+        </div>
+      </div>
+    )
+  }
+)
+ChartTooltipContent.displayName = "ChartTooltip"
+
+const ChartLegend = RechartsPrimitive.Legend
+
+const ChartLegendContent = React.forwardRef<
+  HTMLDivElement,
+  React.ComponentProps<"div"> &
+    Pick<RechartsPrimitive.LegendProps, "payload" | "verticalAlign"> & {
+      hideIcon?: boolean
+      nameKey?: string
+    }
+>(
+  (
+    { className, hideIcon = false, payload, verticalAlign = "bottom", nameKey },
+    ref
+  ) => {
+    const { config } = useChart()
+
+    if (!payload?.length) {
+      return null
+    }
+
+    return (
+      <div
+        ref={ref}
+        className={cn(
+          "flex items-center justify-center gap-4",
+          verticalAlign === "top" ? "pb-3" : "pt-3",
+          className
+        )}
+      >
+        {payload
+          .filter((item) => item.type !== "none")
+          .map((item) => {
+            const key = `${nameKey || item.dataKey || "value"}`
+            const itemConfig = getPayloadConfigFromPayload(config, item, key)
+
+            return (
+              <div
+                key={item.value}
+                className={cn(
+                  "flex items-center gap-1.5 [&>svg]:h-3 [&>svg]:w-3 [&>svg]:text-muted-foreground"
+                )}
+              >
+                {itemConfig?.icon && !hideIcon ? (
+                  <itemConfig.icon />
+                ) : (
+                  <div
+                    className="h-2 w-2 shrink-0 rounded-[2px]"
+                    style={{
+                      backgroundColor: item.color,
+                    }}
+                  />
+                )}
+                {itemConfig?.label}
+              </div>
+            )
+          })}
+      </div>
+    )
+  }
+)
+ChartLegendContent.displayName = "ChartLegend"
+
+function getPayloadConfigFromPayload(
+  config: ChartConfig,
+  payload: unknown,
+  key: string
+) {
+  if (typeof payload !== "object" || payload === null) {
+    return undefined
+  }
+
+  const payloadPayload =
+    "payload" in payload &&
+    typeof payload.payload === "object" &&
+    payload.payload !== null
+      ? payload.payload
+      : undefined
+
+  let configLabelKey: string = key
+
+  if (
+    key in payload &&
+    typeof payload[key as keyof typeof payload] === "string"
+  ) {
+    configLabelKey = payload[key as keyof typeof payload] as string
+  } else if (
+    payloadPayload &&
+    key in payloadPayload &&
+    typeof payloadPayload[key as keyof typeof payloadPayload] === "string"
+  ) {
+    configLabelKey = payloadPayload[
+      key as keyof typeof payloadPayload
+    ] as string
+  }
+
+  return configLabelKey in config
+    ? config[configLabelKey]
+    : config[key as keyof typeof config]
+}
+
+export {
+  ChartContainer,
+  ChartTooltip,
+  ChartTooltipContent,
+  ChartLegend,
+  ChartLegendContent,
+  ChartStyle,
 }
